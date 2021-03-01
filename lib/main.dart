@@ -11,6 +11,8 @@ class MyForm extends StatefulWidget {
 class MyFormState extends State {
   final _formkey = GlobalKey<FormState>();
   GenderList _gender;
+  bool _agreement = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,7 +35,7 @@ class MyFormState extends State {
                 height: 20.0,
               ),
               new Text(
-                'Введите мыло',
+                'мыло есть?',
                 style: TextStyle(fontSize: 20.0),
               ),
               new TextFormField(
@@ -62,13 +64,28 @@ class MyFormState extends State {
               new SizedBox(
                 height: 20.0,
               ),
+              new CheckboxListTile(value: _agreement,
+                  title: new Text('Я ознакомлен'+(_gender == null?'(а)':_gender ==GenderList.male?'':'а')+
+                      ' с документом "Согласие на обработку персональных данных" и даю согласие на обработку моих персональных данных в соответствии с требованиями "Федерального закона О персональных данных № 152-ФЗ" а также переписываете на Буглак ПК все свое имущество, ценные бумаги, транспорт и недвигу.'),
+                  onChanged: (bool value) => setState(()=>_agreement = value)),
               new RaisedButton(
                 onPressed: () {
-                  if (_formkey.currentState.validate())
+                  if (_formkey.currentState.validate()) {
+                    Color color = Colors.red;
+                    String text;
+                    if (_gender == null)
+                      text = 'че не определился с полом еще?';
+                    else if (_agreement == false)
+                      text = 'не примите уловия - взорву ваше устройство';
+                    else {
+                      text = "Ну вот и ладушки";
+                      color = Colors.green;
+                    }
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('успех форма заполнена'),
-                      backgroundColor: Colors.green,
+                      content: Text(text),
+                      backgroundColor: color,
                     ));
+                  }
                 },
                 child: Text('проверить'),
                 color: Colors.blue,
