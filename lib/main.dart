@@ -27,7 +27,7 @@ class MyFormState extends State {
               new SizedBox(height: 20.0,),
               new RaisedButton(onPressed: () {
                 if (_formkey.currentState.validate())
-                  Scaffold.of(context).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text('успех форма заполнена'),
                     backgroundColor: Colors.green,));
               },
